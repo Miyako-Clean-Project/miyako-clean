@@ -33,16 +33,18 @@ let data
 let markers = []
 
 window.initMap = initMap
-window.onload = onload
+// window.addEventListener("DOMContentLoaded", onload)
 
-async function onload() {
-  const docs = await getDocs(collection(firestore, "reports"))
-  data = []
-  docs.forEach((doc) => {
-    data.push(doc.data())
-  })
-  updateMakers()
-}
+// async function onload() {
+//   console.log("aaaaa")
+//   const docs = await getDocs(collection(firestore, "reports"))
+//   data = []
+//   console.log(docs)
+//   docs.forEach((doc) => {
+//     data.push(doc.data())
+//   })
+//   updateMakers()
+// }
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
@@ -54,10 +56,15 @@ function initMap() {
 }
 
 function updateMakers () {
-  if (markers.length === 0 && map && data) {
-    for(const report of data) {
-      markers.push(google.maps.Marker({
-        position: {lat: report.location.latitude, lng: report.location.longitude},
+  const pos = [
+    { lat: 24.8154, lng: 125.2711 },
+    { lat: 24.8054, lng: 125.2811 }
+  ]
+  if (markers.length === 0 && map) {
+    console.log(pos)
+    for(const p of pos) {
+      markers.push(new google.maps.Marker({
+        position: p,
         map: map,
       }))
     }
