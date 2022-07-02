@@ -1,15 +1,15 @@
 // Import the functions you need from the SDKs you need
 import {
   initializeApp
-} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js"
 import {
   getAnalytics,
-} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-analytics.js";
+} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-analytics.js"
 import {
   getFirestore,
   collection,
   getDocs
-} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-firestore.js"
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -21,12 +21,12 @@ const firebaseConfig = {
   messagingSenderId: "550216961810",
   appId: "1:550216961810:web:04f15f578ed1f818932dcb",
   measurementId: "G-YNL0P4RKFW"
-};
+}
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const firestore = getFirestore(app);
+const app = initializeApp(firebaseConfig)
+const analytics = getAnalytics(app)
+const firestore = getFirestore(app)
 
 let map
 let data
@@ -47,22 +47,36 @@ window.initMap = initMap
 // }
 
 function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 24.8054, lng: 125.2811 },
-    zoom: 12,
-  });
-  updateMakers()
+
+  if (navigator.geolocation) {
+    // 現在位置を取得できる場合の処理
+    navigator.geolocation.getCurrentPosition(positionUpdated)
+  }
 
 }
 
-function updateMakers () {
+function positionUpdated(pos) {
+  console.log(pos)
+  
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: pos.coords.latitude, lng: pos.coords.longitude },
+    zoom: 12,
+  })
+  new google.maps.Marker({
+    position: { lat: pos.coords.latitude, lng: pos.coords.longitude },
+    map: map,
+  })
+  updateMakers()
+}
+
+function updateMakers() {
   const pos = [
     { lat: 24.8154, lng: 125.2711 },
     { lat: 24.8054, lng: 125.2811 }
   ]
   if (markers.length === 0 && map) {
     console.log(pos)
-    for(const p of pos) {
+    for (const p of pos) {
       markers.push(new google.maps.Marker({
         position: p,
         map: map,
