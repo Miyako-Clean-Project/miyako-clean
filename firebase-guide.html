@@ -1,0 +1,87 @@
+<!-- このようなタグで囲まれた文章はコメントです -->
+<!doctype html> <!--左のタグはこのファイルがHTMLで書かれていることを示しています-->
+
+<!--ここからがHTMLの本体です-->
+<html lang="ja">
+
+  <!--headの中身は表示されませんが，色々な設定を記入します-->
+  <head>
+
+    <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
+    <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
+  </head>
+
+  <!--bodyの中身が表示される内容です-->
+  <body>
+
+こんにちは
+
+<div>
+
+名前 <input type="text" id="nameInput"/>
+</div>
+<div>
+
+年齢 <input type="text" id="ageInput"/>
+
+<input type="button" value="Buttonだよ" id="button1"/>
+</div>
+    <!--ここにデザインの中見を書く-->
+
+    <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
+    <script type="module">
+      // 必要なライブラリを読み込む
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
+      import { getFirestore, collection, getDoc, doc, addDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
+      import { getAuth, createUserWithEmailAndPassword  } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
+
+      // Firebaseへのアクセス設定．アクセス先など．
+      let firebaseConfig = {
+        apiKey: "AIzaSyCHPeT9O1zXx0C1FSTZ0J-fUUA7BnX1Hxg",
+        authDomain: "miyako-clean-app.firebaseapp.com",
+        projectId: "miyako-clean-app",
+        storageBucket: "miyako-clean-app.appspot.com",
+        messagingSenderId: "550216961810",
+        appId: "1:550216961810:web:04f15f578ed1f818932dcb",
+        measurementId: "G-YNL0P4RKFW"
+      };
+
+      // Firebaseの初期化
+      let app = initializeApp(firebaseConfig);
+      let db = getFirestore();
+
+      document.getElementById("button1").addEventListener("click", button1Click)
+
+      async function button1Click () {
+        let auth = getAuth();
+        let result = await createUserWithEmailAndPassword(auth, "jyu0414@gmail.com", "password1234")
+
+        await setDoc(doc(db, 'user', result.user.uid), {
+          name: document.getElementById("nameInput").value,
+          mail: 'jyu0414@gmail.com',
+          point: 0,
+          postCount: 0
+        })
+        await addDoc(doc(db, 'trash'), {
+          data: "dataだよ"
+        })
+      }
+
+      window.onload = async function() {
+        let doca = await getDoc(doc(db, 'user', 'M4DVHdCSqSNqSgyHvMjn'))
+        let docs = await getDocs(collection(db, 'trash'))
+        console.log(doca.data())
+
+        // docs.forEach(function(doc) {
+        //   console.log(doc.data())
+        // })
+
+
+      }
+
+
+
+    </script>
+  </body>
+</html>
