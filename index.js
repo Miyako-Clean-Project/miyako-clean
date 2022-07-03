@@ -62,10 +62,10 @@ function positionUpdated(pos) {
     center: { lat: pos.coords.latitude, lng: pos.coords.longitude },
     zoom: 12,
   })
-  new google.maps.Marker({
-    position: { lat: pos.coords.latitude, lng: pos.coords.longitude },
-    map: map,
-  })
+  // new google.maps.Marker({
+  //   position: { lat: pos.coords.latitude, lng: pos.coords.longitude },
+  //   map: map,
+  // })
   updateMakers()
 }
 
@@ -80,6 +80,14 @@ function updateMakers() {
       markers.push(new google.maps.Marker({
         position: p,
         map: map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: "blue",
+          strokeColor: "white",
+          strokeWeight: 1.0,
+          fillOpacity: 0.9,
+          scale: 10,
+        }
       }))
     }
   }
