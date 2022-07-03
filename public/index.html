@@ -1,0 +1,75 @@
+<!-- このようなタグで囲まれた文章はコメントです -->
+<!doctype html> <!--左のタグはこのファイルがHTMLで書かれていることを示しています-->
+
+<!--ここからがHTMLの本体です-->
+<html lang="ja">
+
+  <!--headの中身は表示されませんが，色々な設定を記入します-->
+  <head>
+
+    <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>離島deプログラミング アップロード</title> <!-- ブラウザの上部などに表示されるタイトル -->
+  </head>
+
+  <!--bodyの中身が表示される内容です-->
+  <body>
+    
+    <div class="mb-3 p-5">
+      <h1>みやこclean app アップロード</h1>
+      ページ名
+      <input type="text" class="form-control mb-2" id="name" >
+      ファイル
+      <input class="form-control mb-2" type="file" id="file">
+      <button class="btn btn-primary" id="submitbutton">アップロード</button>
+      <span id="message"></span>
+    </div>
+
+
+    <!--ここにデザインの中見を書く-->
+
+    <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
+    <script type="module">
+      // 必要なライブラリを読み込む
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
+      import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
+      import { getAuth  } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
+      import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-storage.js";
+      // Firebaseへのアクセス設定．アクセス先など．
+      const firebaseConfig = {
+        apiKey: "AIzaSyCHPeT9O1zXx0C1FSTZ0J-fUUA7BnX1Hxg",
+        authDomain: "miyako-clean-app.firebaseapp.com",
+        projectId: "miyako-clean-app",
+        storageBucket: "miyako-clean-app.appspot.com",
+        messagingSenderId: "550216961810",
+        appId: "1:550216961810:web:04f15f578ed1f818932dcb",
+        measurementId: "G-YNL0P4RKFW"
+      };
+
+      // Firebaseの初期化
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore();
+
+      document.getElementById("submitbutton").addEventListener("click", upload)
+
+      function upload () {
+        const storage = getStorage();
+const storageRef = ref(storage, document.getElementById("name").value + "_uploaded.html");
+
+// 'file' comes from the Blob or File API
+
+document.getElementById("message").innerHTML = "アップロード中"
+
+uploadBytes(storageRef,  document.getElementById('file').file).then((snapshot) => {
+  alert("アップロード完了")
+  document.getElementById("message").innerHTML = "アップロード完了"
+}).catch(e => {console.log(e)});
+      }
+      
+      
+
+    </script>
+  </body>
+</html>
