@@ -22,17 +22,13 @@
       text-align: center;
       height: 5px;
       text-align: center;
-      position: relative;
-    }
 
-    form {
       position: absolute;
       top: 30%;
       left: 30%;
       transform: translate(-30%, -30%);
       width: 100%;
     }
-
     input {
       width: 200px;
       padding: 3px;
@@ -52,10 +48,14 @@
     </div>
 
     <div class="login_form_btm">
-      <input type="Id" name="user_Id" placeholder="ユーザーIDを入力してください"><br>
-      <input type="password" name="password" placeholder="パスワードを入力してください">
+      <input type="email" id="id" name="user_Id" placeholder="ユーザーIDを入力してください"><br>
+      <input type="password" id="password" name="password" placeholder="パスワードを入力してください">
+      <div>
+        <span id="error"></span>ı
+      </div>
+
     </div>
-    <button type="submit">ログイン</button>
+    <button type="button" id="register">ログイン</button>
 
   </form>
 
@@ -95,6 +95,8 @@
 
     let userId
     onAuthStateChanged(auth, function(user) {
+      console.log(user)
+      console.log("onauthstatechange")
       if (user) {
         //ログイン済みのとき
         window.location.herf = '/top.html'
@@ -104,26 +106,19 @@
       }
     });
 
-    window.onload = async function() {
-      const docs = await getDocs(collection(db, 'reports'))
-      docs.forEach(function(doc) {
-        console.log(doc.data())
-      })
-    }
-
     document.getElementById("register").addEventListener("click", login);
 
     function login() {
-
-      signInWithEmailAndPassword(auth, document.getElementById("name1").value,
-        document.getElementById("pas1").value).
+      signInWithEmailAndPassword(auth, document.getElementById("id").value,
+        document.getElementById("password").value).
       then((userCredential) => {
           // Signed in
           const user = userCredential.user;
+          console.log("signedin")
           window.location.href = '/top.html'
+
         })
         .catch((error) => {
-          console.log(error)
           const errorCode = error.code;
           const errorMail = error.mail;
           document.getElementById("error").innerHTML = "エラーです"

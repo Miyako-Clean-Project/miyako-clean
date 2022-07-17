@@ -76,7 +76,8 @@
 
     let userId
     let auth = getAuth()
-    /* onAuthStateChanged(auth,function(user){
+
+    onAuthStateChanged(auth,function(user){
         if(user){
           //ログイン済みの時
           userId=user.uid;
@@ -84,7 +85,7 @@
           //ログインできていない時
           window.location.href='/login.html'
         }
-      });*/
+      });
 
     window.initMap = initMap
 
@@ -156,23 +157,15 @@
     function clickEventFunc(event) {
       alert(event.position)
       window.location.href = 'detail.html'
-
-
-
     }
 
 
     window.onload = async function() {
-
-
       let docs = await getDocs(collection(db, 'trash'))
       docs.forEach(function(doc) {
         let litag = document.createElement("li")
         document.getElementById("news1").appendChild(litag);
         document.getElementById("news1").append(doc.data()["kind"])
-
-
-
       })
     }
   </script>
