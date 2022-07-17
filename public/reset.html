@@ -8,48 +8,23 @@
 <!--headの中身は表示されませんが，色々な設定を記入します-->
 
 <head>
-
   <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
-  <link rel="stylesheet" type="text/css" href="main.css">
+  <!-- <link rel="stylesheet" type="text/css" href="main.css"> -->
   <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
-  <style media="screen">
-
-  </style>
 </head>
 
 <!--bodyの中身が表示される内容です-->
 
 <body>
-
-  <h1>ゴミSNSへようこそ</h1>
-
-  <a id="login" href="login.html">ログインへ</a>
-
-
-  <h2>ゴミSNSの使い方</h2>
-  <h3>1. ゴミを見つけたら写真を撮って投稿しよう</h3>
-  見つけた場所と量を入力する<br />
-  投稿数によってポイントがもらえる<br />
-  <img src="gomizibun.jpeg" alt="投稿画面" width="15%" height="15%">
-
-  <h3>2. みんなの投稿を見よう</h3>
-  ゴミの量や種類、見つけた時間が分かる<br />
-  <img src="gomitoukou.png" alt="みんなの投稿" width="20%" height="16%">
-
-  <h3>3. ゴミを拾おう</h3>
-  ゴミのある場所に行ってゴミ拾いをしよう<br />
-  マップを見ると一目でゴミの多い場所が分かる<br />
-  <img src="gomi.jpeg" alt="ゴミの写真" width=30% height=30%>
-  <br />
-  <br />
-
+  <div>
+    <h2>メールアドレス<input type="text" id="mailAddress"></h2>
+    <!-- 新規パスワード<input type="text" id="pas1"> -->
+    <!-- 再度パスワードを入力してください（確認用）<input type="text" id="pas２"> -->
+    <input type="button" value="送信" id="send">
+  </div>
   <!--ここにデザインの中見を書く-->
-  <style>
-    h3 {
-      color: red;
-    }
-  </style>
+
   <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
   <script type="module">
     // 必要なライブラリを読み込む
@@ -62,8 +37,12 @@
       getDocs
     } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
     import {
-      getAuth
+      getAuth,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail
     } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
+
+    // import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
     // Firebaseへのアクセス設定．アクセス先など．
     const firebaseConfig = {
@@ -79,13 +58,35 @@
     // Firebaseの初期化
     const app = initializeApp(firebaseConfig);
     const db = getFirestore();
-
+    const auth = getAuth();
+    console.log(auth)
 
     window.onload = async function() {
       const docs = await getDocs(collection(db, 'reports'))
       docs.forEach(function(doc) {
         console.log(doc.data())
       })
+    }
+
+    document.getElementById("send").addEventListener("click", passwordReset);
+
+    function passwordReset() {
+
+      sendPasswordResetEmail(auth, document.getElementById("mailAddress").value)
+        .then(() => {
+          alert("Password reset email sent!")
+          // signInWithEmailAndPassword(auth, document.getElementById("name1").value,
+          // document.getElementById("pas1").value).
+          // then((userCredential) => {
+          // Signed in
+          // const user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          console.log(error)
+          const errorCode = error.code;
+          const errorMail = error.mail;
+        });
     }
   </script>
 </body>

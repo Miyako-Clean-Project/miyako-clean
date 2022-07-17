@@ -1,0 +1,180 @@
+<!doctype html>
+<!--左のタグはこのファイルがHTMLで書かれていることを示しています-->
+<!-- このようなタグで囲まれた文章はコメントです -->
+
+<!--ここからがHTMLの本体です-->
+<html lang="ja">
+
+<!--headの中身は表示されませんが，色々な設定を記入します-->
+
+<head>
+
+  <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
+  <!-- <link rel="stylesheet" type="text/css" href="main.css"> -->
+  <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
+</head>
+
+<!--bodyの中身が表示される内容です-->
+
+<body>
+  <a href="top.html">前のページに戻る</a>
+  <from name="-
+
+    form1" action="#" method="post">
+
+    <p>画像;<br>
+      <input type="file" id="pictureBefore">
+    </p>
+
+    <fieldset>
+      <legend id="kind">ごみの種類</legend>
+      <div>
+        <input type="checkbox" id="moeru" name="kind" value="moeru">
+        <label for="moeru">燃えるゴミ</label>
+
+        <input type="checkbox" id="kann" name="kind" value="kan">
+        <label for="kann">缶</label>
+
+        <input type="checkbox" id="pettobotolu" name="kind" value="pettobotolu">
+        <label for="pettobotolu">ペットボトル</label>
+      </div>
+      <div>
+        <input type="checkbox" id="kaden" name="kind" value="kaden">
+        <label for="kaden">家電</label>
+
+        <input type="checkbox" id="nougyou" name="kind" value="nougyou">
+        <label for="nougyou">農業廃棄物</label>
+
+
+        <input type="checkbox" id="bin" name="kind" value="bin">
+        <label for="bin">びん</label>
+      </div>
+      <div>
+        <input type="checkbox" id="wakaranai" name="kind" value="wakaranai">
+        <label for="wakaranai">わからない</label>
+
+        <input type="checkbox" id="happou" name="kind" value="happou">
+        <label for="happou">発泡スチロール</label>
+      </div>
+    </fieldset>
+
+    <p>ごみの量 </p>
+    <select id="amount" name="example">
+      <option value="1">多い</option>
+      <option value="2">普通</option>
+      <option value="3">少ない</option>
+    </select>
+    <p>どれほどその場に残っていますか？;</p>
+    <select id="remaining" name="example">
+      <option value="1">たくさん残ってる</option>
+      <option value="2">拾ったがまだ残ってる</option>
+      <option value="3">全部拾った</option>
+    </select>
+    <p>コメント;
+    </p><input type="text" id="comment">
+
+
+    <input type="button" value="ごみ登録！" id="trashRegister">
+
+    </form>
+
+
+
+    <!--ここにデザインの中見を書く-->
+
+    <!--全ての表示する情報を読み込んだ後，JavaScriptをfrom
+    読み込みます-->
+    <script type="module">
+      // 必要なライブラリを読み込む
+      import {
+        initializeApp
+      } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        addDoc,
+        serverTimestamp
+      } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged
+      } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
+
+      // Firebaseへのアクセス設定．アクセス先など．
+      const firebaseConfig = {
+        apiKey: "AIzaSyCHPeT9O1zXx0C1FSTZ0J-fUUA7BnX1Hxg",
+        authDomain: "miyako-clean-app.firebaseapp.com",
+        projectId: "miyako-clean-app",
+        storageBucket: "miyako-clean-app.appspot.com",
+        messagingSenderId: "550216961810",
+        appId: "1:550216961810:web:04f15f578ed1f818932dcb",
+        measurementId: "G-YNL0P4RKFW"
+      };
+
+      // Firebaseの初期化
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore();
+      let map
+      let date
+      let makers = []
+
+      let userId
+      let auth = getAuth()
+      onAuthStateChanged(auth, function(user) {
+        if (user) {
+          userId = user.uid;
+        } else {
+          window.location.href = '/login.html'
+        }
+      });
+      document.getElementById("trashRegister").addEventListener("click", trashRegisterFunc)
+
+
+      async function trashRegisterFunc() {
+
+        let kindList = []
+        let kindElements = document.getElementsByName('kind')
+        for (var i = 0; i < kindElements.length; i++) {
+
+
+
+          if (kindElements[i].checked === true) {
+            console.log("true");
+            kindList.push(kindElements[i].value)
+          } else {
+            console.log("false");
+          }
+        }
+
+
+        await addDoc(collection(db, 'trash'), {
+          kind: kindList,
+          userID: userId,
+          time: serverTimestamp(),
+          amount: document.getElementById("amount").value,
+          remaining: document.getElementById("remaining").value,
+          comment: document.getElementById("comment").value,
+
+
+          //window.location.href = 'https://qiita.com/shuntaro_tamura/items/99adbe51132e0fb3c9e9' // 通常の遷移
+
+        })
+
+
+        alert("こんにちは")
+      }
+
+
+
+      window.onload = async function() {
+        const docs = await getDocs(collection(db, 'reports'))
+        docs.forEach(function(doc) {
+          console.log(doc.data())
+        })
+      }
+    </script>
+</body>
+
+</html>

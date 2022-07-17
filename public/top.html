@@ -1,0 +1,184 @@
+<!-- このようなタグで囲まれた文章はコメントです -->
+<!doctype html>
+<!--左のタグはこのファイルがHTMLで書かれていることを示しています-->
+
+<!--ここからがHTMLの本体です-->
+<html lang="ja">
+
+<!--headの中身は表示されませんが，色々な設定を記入します-->
+
+<head>
+
+  <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
+  <link rel="stylesheet" href="button.css">
+
+</head>
+
+<!--bodyの中身が表示される内容です-->
+
+<body>
+
+  <ul>
+    <li id="news1">
+
+
+    </li>
+  </ul>
+  <div class='btn'>
+
+    <a href='upload.html'>投稿</a>
+
+  </div>
+
+  <div id="map" style="width:512px; height:300px;"></div>
+
+  <!--ここにデザインの中見を書く-->
+
+  <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
+
+  <script type="module">
+    // 必要なライブラリを読み込む
+    import {
+      initializeApp
+
+    } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs
+
+    } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged
+
+    } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
+
+    // Firebaseへのアクセス設定．アクセス先など．
+    const firebaseConfig = {
+      apiKey: "AIzaSyCHPeT9O1zXx0C1FSTZ0J-fUUA7BnX1Hxg",
+      authDomain: "miyako-clean-app.firebaseapp.com",
+      projectId: "miyako-clean-app",
+      storageBucket: "miyako-clean-app.appspot.com",
+      messagingSenderId: "550216961810",
+      appId: "1:550216961810:web:04f15f578ed1f818932dcb",
+      measurementId: "G-YNL0P4RKFW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore();
+    let map
+    let data
+    let markers = []
+
+    let userId
+    let auth = getAuth()
+    /* onAuthStateChanged(auth,function(user){
+        if(user){
+          //ログイン済みの時
+          userId=user.uid;
+        }else {
+          //ログインできていない時
+          window.location.href='/login.html'
+        }
+      });*/
+
+    window.initMap = initMap
+
+    function initMap() {
+
+      if (navigator.geolocation) {
+        // 現在位置を取得できる場合の処理
+        navigator.geolocation.getCurrentPosition(positionUpdated)
+        showMap(24.8054, 125.2811)
+      }
+
+    }
+
+    function showMap(lat, lng) {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: {
+          lat: lat,
+          lng: lng
+        },
+        zoom: 14,
+      })
+      new google.maps.Marker({
+        position: {
+          lat: lat,
+          lng: lng
+        },
+        map: map,
+        icon: 'http://127.0.0.1:51712/%20pin2.png'
+      })
+      markers = []
+      updateMakers()
+    }
+
+    function positionUpdated(pos) {
+      console.log(pos)
+      showMap(pos.coords.latitude, pos.coords.longitude)
+
+    }
+
+    function updateMakers() {
+      const pos = [{
+          lat: 24.8154,
+          lng: 125.2711,
+          id: "sdhafeuef"
+        },
+        {
+          lat: 24.8054,
+          lng: 125.2811,
+          id: "dhhuefhwkf"
+        }
+      ]
+      if (markers.length === 0 && map) {
+        console.log(pos)
+        for (const p of pos) {
+          let marker = new google.maps.Marker({
+            position: p,
+            map: map,
+          })
+          console.log(marker)
+          markers.push(marker)
+          // clickイベントを取得するListenerを追加
+          google.maps.event.addListener(marker, 'click', (event) => {
+            alert(p.id)
+          });
+        }
+      }
+    }
+
+    function clickEventFunc(event) {
+      alert(event.position)
+      window.location.href = 'detail.html'
+
+
+
+    }
+
+
+    window.onload = async function() {
+
+
+      let docs = await getDocs(collection(db, 'trash'))
+      docs.forEach(function(doc) {
+        let litag = document.createElement("li")
+        document.getElementById("news1").appendChild(litag);
+        document.getElementById("news1").append(doc.data()["kind"])
+
+
+
+      })
+    }
+  </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByyciSOBeQxM5NWvIGpkD5hdPDpkAQLo0&callback=initMap&v=weekly" defer></script>
+
+</body>
+
+</html>

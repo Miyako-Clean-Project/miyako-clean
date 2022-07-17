@@ -5,51 +5,55 @@
 <!--ここからがHTMLの本体です-->
 <html lang="ja">
 
-<!--headの中身は表示されませんが，色々な設定を記入します-->
 
 <head>
 
-  <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
-  <link rel="stylesheet" type="text/css" href="main.css">
   <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
-  <style media="screen">
-
-  </style>
 </head>
 
 <!--bodyの中身が表示される内容です-->
 
 <body>
+  <div class="sample">
+    <img src="https://onl.sc/mQs18fw">
+  </div>
 
-  <h1>ゴミSNSへようこそ</h1>
+  <h1 style="color: black">アップロードありがとうございました</h1>
 
-  <a id="login" href="login.html">ログインへ</a>
+  <div class="center">
+    <ul>
+      <li><a href="top.html">トップ画面に戻る</a></li>
+      <li><a href="upload.html">みんなの画面に戻る</a></li>
+      <li><a href="user.html">個人ページに戻る</a></li>
+    </ul>
+  </div>
 
 
-  <h2>ゴミSNSの使い方</h2>
-  <h3>1. ゴミを見つけたら写真を撮って投稿しよう</h3>
-  見つけた場所と量を入力する<br />
-  投稿数によってポイントがもらえる<br />
-  <img src="gomizibun.jpeg" alt="投稿画面" width="15%" height="15%">
+  <style media="screen">
+    h1 {
+      text-align: center;
+    }
 
-  <h3>2. みんなの投稿を見よう</h3>
-  ゴミの量や種類、見つけた時間が分かる<br />
-  <img src="gomitoukou.png" alt="みんなの投稿" width="20%" height="16%">
+    div {
+      text-align: center;
+    }
 
-  <h3>3. ゴミを拾おう</h3>
-  ゴミのある場所に行ってゴミ拾いをしよう<br />
-  マップを見ると一目でゴミの多い場所が分かる<br />
-  <img src="gomi.jpeg" alt="ゴミの写真" width=30% height=30%>
-  <br />
-  <br />
+    div.sample img {
+      width: 500px;
+    }
 
-  <!--ここにデザインの中見を書く-->
-  <style>
-    h3 {
-      color: red;
+    div.center {
+      text-align: center;
     }
   </style>
+
+
+
+
+
+
   <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
   <script type="module">
     // 必要なライブラリを読み込む
