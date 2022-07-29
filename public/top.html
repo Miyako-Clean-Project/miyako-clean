@@ -13,33 +13,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
   <link rel="stylesheet" type="text/css" href="main.css">
   <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
-  <link rel="stylesheet" href="button.css">
+  <link rel="stylesheet" href="top.css">
 
 </head>
-
 <!--bodyの中身が表示される内容です-->
 
 <body>
 
-  <ul>
-    <li id="news1">
+  <table>
+    <tr>
+      <th class="fixed01"><a href="user.html">Myアカウントへ</a></th>
+    </tr>
+    <tr>
+      <td>
+        <div class="box27">
+          <span class="box-title">最近の報告一覧</span>
+          <p>
+          <div class="scroll">
+            <span>
+              <ul>
+                <li id="news1">
 
 
-    </li>
-  </ul>
-  <div class='btn'>
+                </li>
+              </ul>
+            </span>
+          </div>
+          </p>
+        </div>
 
-    <a href='upload.html'>投稿</a>
+        <br>
+        <div class='btn'>
 
-  </div>
 
-  <div id="map" style="width:512px; height:300px;"></div>
+          <a href='upload.html'>投稿</a>
 
+        </div>
+        <h3>マップ</h3>
+        <div id="map" style="width:512px; height:300px;"></div>
+    </tr>
+    </td>
+
+  </table>
   <!--ここにデザインの中見を書く-->
 
   <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
 
   <script type="module">
+  /*まず、マップ上のピンの種類分けをする際にamountを使おうと思ったが、どのくらいを境に多い・少ない
+    を分けるのかわからなかったため、一応現在地とゴミの位置で種類を分けた。
+    また、Myアカウントへ戻るのをヘッダー的な物の一部に追加したら使いやすそうだったので追加してみると、
+    色味が変（これはすぐに直せる）・別のCSSと重なるとレイヤー？が下になってみづらい
+    というのが課題
+  */
     // 必要なライブラリを読み込む
     import {
       initializeApp
@@ -68,6 +94,8 @@
       measurementId: "G-YNL0P4RKFW"
     };
 
+    let Volume
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore();
     let map
@@ -77,15 +105,15 @@
     let userId
     let auth = getAuth()
 
-    onAuthStateChanged(auth,function(user){
-        if(user){
-          //ログイン済みの時
-          userId=user.uid;
-        }else {
-          //ログインできていない時
-          window.location.href='/login.html'
-        }
-      });
+    onAuthStateChanged(auth, function(user) {
+      if (user) {
+        //ログイン済みの時
+        userId = user.uid;
+      } else {
+        //ログインできていない時
+        window.location.href = '/login.html'
+      }
+    });
 
     window.initMap = initMap
 
@@ -113,7 +141,7 @@
           lng: lng
         },
         map: map,
-        icon: 'http://127.0.0.1:51712/%20pin2.png'
+        icon: 'http://127.0.0.1:3000/pinIncomplete.png'
       })
       markers = []
       updateMakers()
@@ -143,12 +171,20 @@
           let marker = new google.maps.Marker({
             position: p,
             map: map,
+
+            icon: 'http://127.0.0.1:3000/%20pinNormal.png'
+
+
+
+
           })
           console.log(marker)
           markers.push(marker)
           // clickイベントを取得するListenerを追加
           google.maps.event.addListener(marker, 'click', (event) => {
-            alert(p.id)
+            //deta.htmlに飛ばす
+            window.location.href = 'detail.html?id=' + p.id
+
           });
         }
       }
@@ -159,13 +195,21 @@
       window.location.href = 'detail.html'
     }
 
-
     window.onload = async function() {
       let docs = await getDocs(collection(db, 'trash'))
       docs.forEach(function(doc) {
         let litag = document.createElement("li")
         document.getElementById("news1").appendChild(litag);
-        document.getElementById("news1").append(doc.data()["kind"])
+        document.getElementById("news1").append("種類:" + doc.data()["kind"])
+        document.getElementById("news1").append("量:" + doc.data()["amount"])
+        document.getElementById("news1").append("コメント:" + doc.data()["comment"])
+
+        if (doc.data()["amount"] < 1) {
+
+          Volume = 1
+        } else {
+          Volume = 2
+        }
       })
     }
   </script>

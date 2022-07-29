@@ -1,0 +1,34 @@
+<style>
+#login {
+  position: fixed; /* 要素の位置を固定する */
+  bottom: 90; /* 基準の位置を画面の一番下に指定する */
+  right: 0; /* 基準の位置を画面の一番右に指定する */
+  width: 300px; /* 幅を指定する */
+  height: 40px;
+  }
+
+#title {
+position: fixed; /* 要素の位置を固定する */
+text-align:  center;
+top: 0;
+margin: 0; /* 要素の余白を０にする */
+padding: 10px; /* 要素内側の余白を指定する */
+height:50px; /* 高さを指定する */
+width: 100%; /* 幅を指定する */
+background: #00FF99; /* 背景色を指定する */
+color:; /* フォントの色を指定する */
+font-size: 30px;
+}
+.box1{
+height:100px; /* 高さを指定する */
+width: 90%; /* 幅を指定する */
+background: #AAAAAA; /* 背景色を指定する */
+margin-top: 60px; /* 要素内側の余白を指定する */
+}
+.box2{
+height:100px; /* 高さを指定する */
+width: 90%; /* 幅を指定する */
+background: #666666; /* 背景色を指定する */
+margin-top: 10px; /* 要素内側の余白を指定する */
+}
+</style>

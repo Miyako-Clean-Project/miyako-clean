@@ -23,9 +23,13 @@
 
     form1" action="#" method="post">
 
-    <p>画像;<br>
-      <input type="file" id="pictureBefore">
-    </p>
+    <form>
+  <input type="file" accept='image/*' onchange="previewImage(this);">
+  </form>
+  <p>
+  Preview:<br>
+  <img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:200px;">
+  </p>
 
     <fieldset>
       <legend id="kind">ごみの種類</legend>
@@ -86,6 +90,7 @@
     <!--全ての表示する情報を読み込んだ後，JavaScriptをfrom
     読み込みます-->
     <script type="module">
+    //27行目の onchange="previewImage(this);">に問題があると言われたけどどこが悪いのかがわからないです。
       // 必要なライブラリを読み込む
       import {
         initializeApp
@@ -162,8 +167,8 @@
 
         })
 
-
-        alert("こんにちは")
+      window.location = "finish.html";
+        //alert("こんにちは")
       }
 
 
@@ -171,9 +176,18 @@
       window.onload = async function() {
         const docs = await getDocs(collection(db, 'reports'))
         docs.forEach(function(doc) {
-          console.log(doc.data())
+          console.log(doc.data)
         })
       }
+
+      function previewImage(obj)
+{
+	var fileReader = new FileReader();
+	fileReader.onload = (function() {
+		document.getElementById('preview').src = fileReader.result;
+	});
+	fileReader.readAsDataURL(obj.files[0]);
+}
     </script>
 </body>
 

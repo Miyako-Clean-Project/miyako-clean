@@ -1,51 +1,38 @@
 <!-- このようなタグで囲まれた文章はコメントです -->
-<!doctype html>
-<!--左のタグはこのファイルがHTMLで書かれていることを示しています-->
+<!doctype html> <!--左のタグはこのファイルがHTMLで書かれていることを示しています-->
 
 <!--ここからがHTMLの本体です-->
 <html lang="ja">
 
-<!--headの中身は表示されませんが，色々な設定を記入します-->
+  <!--headの中身は表示されませんが，色々な設定を記入します-->
+  <head>
 
-<head>
+    <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
+    <!-- <link rel="stylesheet" type="text/css" href="main.css"> -->
+    <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
+  </head>
 
-  <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
-  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
-  <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
-</head>
-
-<!--bodyの中身が表示される内容です-->
-
-<body>
-  <ul>
-    <li><span style="font-size: 25px;">場所</span>　<span id="place"></span><br /></li>
-    <li><span style="font-size: 25px;">日時</span>　<span id="time"></span><br /></li>
-    <li><span style="font-size: 25px;">量</span>　　 <span id="amount"></span><br /></li>
-    <li><span style="font-size: 25px;">コメント</span>　<span id="comment"></span><br /></li>
-    <li><span style="font-size: 25px;">ここのゴミだよ〜</span>　<span id="comment"></span><br /></li>
+  <!--bodyの中身が表示される内容です-->
+  <body>
+<ul>
+<li><span style="font-size: 25px;">場所</span>　<span id = "place"></span><br/></li>
+<li><span style="font-size: 25px;">日時</span>　<span id = "time"></span><br/></li>
+<li><span style="font-size: 25px;">量</span>　　 <span id = "amount"></span><br/></li>
+<li><span style="font-size: 25px;">コメント</span>　<span id="comment"></span><br/></li>
+<li><span style="font-size: 25px;">ここのゴミだよ〜</span>　<span id="comment"></span><br/></li>
 
 
-    <div id="pictureBefore">
-    </div>
-    <!--ここにデザインの中見を書く-->
+<div id="pictureBefore">
+</div>
+   <!--ここにデザインの中見を書く-->
 
     <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
     <script type="module">
       // 必要なライブラリを読み込む
-      import {
-        initializeApp
-      } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
-      import {
-        getFirestore,
-        collection,
-        getDocs,
-        getDoc,
-        doc
-      } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
-      import {
-        getAuth,
-        onAuthStateChanged
-      } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
+      import { getFirestore, collection, getDocs,getDoc,doc } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
+      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
 
       // Firebaseへのアクセス設定．アクセス先など．
       const firebaseConfig = {
@@ -65,19 +52,19 @@
 
       window.onload = async function() {
 
-        let doca = await getDoc(doc(db, "trash", "sampletrash"))
+        let doca = await getDoc(doc(db,"trash","sampletrash"))
 
 
         document.getElementById("place").innerHTML = doca.data()["place"]
         let timeStr = doca.data()["time"].toDate()
-        letformattTime = timeStr.getFullYear() + "年"(timeStr.getmonth() + 1) + "月" + timeStr.getDate() + "日" + timeStr.getHours() + "時" + timeStr.getminutes() + "分"
-        document.getElementById("time").innerHTML = formatTime = doca.data()["time"]
+        let formatTime = timeStr.getFullYear() + "年" + (timeStr.getMonth()+1)+ "月" + timeStr.getDate() + "日" + timeStr.getHours() + "時" + timeStr.getMinutes() + "分"
+        document.getElementById("time").innerHTML = formatTime
         document.getElementById("amount").innerHTML = doca.data()["amount"]
         document.getElementById("comment").innerHTML = doca.data()["comment"]
 
         let str = doca.data()["pictureBefore"]
-        let str1 = "'" + str + "'"
-        let str2 = "'<img src=" + str1 + " width='30%' height='10%'/>'"
+        let str1 = "'"+str+"'"
+        let str2 = "'<img src="+str1+" width='30%' height='10%'/>'"
         document.getElementById("pictureBefore").innerHTML = str2
 
 
@@ -103,7 +90,9 @@
           console.log(doc.data())
         })
       }
-    </script>
-</body>
 
+
+
+    </script>
+  </body>
 </html>

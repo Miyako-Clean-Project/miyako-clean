@@ -1,125 +1,130 @@
+
 <!-- このようなタグで囲まれた文章はコメントです -->
-<!doctype html>
-<!--左のタグはこのファイルがHTMLで書かれていることを示しています-->
+<!doctype html> <!--左のタグはこのファイルがHTMLで書かれていることを示しています-->
 
 <!--ここからがHTMLの本体です-->
 <html lang="ja">
 
-<!--h-eadの中身は表示されませんが，色々な設定を記入します-->
+  <!--h-eadの中身は表示されませんが，色々な設定を記入します-->
+  <head>
+    <link rel="stylesheet" type="text/css" href="button.css">
+    <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
 
-<head>
+    <title>PERSONAL ACCOUNT</title> <!-- ブラウザの上部などに表示されるタイトル -->
+  </head>
 
-  <meta charset="utf-8"> <!-- このファイルがUTF-8という文字コードでできていることを示しています -->
-  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
-  <link rel="stylesheet" type="text/css" href="main.css">
-  <title>PERSONAL ACCOUNT</title> <!-- ブラウザの上部などに表示されるタイトル -->
-</head>
+  <!--bodyの中身が表示される内容です-->
+  <body>
+    <h1>Myアカウント</h1>
+名前(<span id="name"></span>) <br/>
 
-<!--bodyの中身が表示される内容です-->
+<ul>
+<li>所持ポイント数(<span id="point"></span>)</li>
+<li>投稿数(<span id="post"></span>)</li>
+<li>ランキング(<span id="ranking"></span>)</li>
+<li>投稿履歴(<span id="posthistoryS"></span>)<ul id = "posth"></ul></li>
 
-<body>
-  <h1>Myアカウント</h1>
-  名前(<span id="name"></span>) <br />
+</ul>
+<div class = 'btn'>
+<a href="upload.html" class="btn">投稿ページへ</a>
+<div/>
+<div class = 'btn'>
+<a href="top.html" class="btn">トップページ戻る</a>
+<div/>
+    <!--ここにデザインの中見を書く-->
 
-  <ul>
-    <li>所持ポイント数(<span id="point"></span>)</li>
-    <li>投稿数(<span id="post"></span>)</li>
-    <li>ランキング(<span id="ranking"></span>)</li>
-    <li>投稿履歴(<span id="posthistoryS"></span>)</li>
-  </ul>
-  <a href="top.html" class="btn">戻る</a>
+    <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
+    <script type="module">
+      // 必要なライブラリを読み込む
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
+      import { getFirestore, collection, getDocs,getDoc,doc } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
+      import { getAuth, onAuthStateChanged  } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
 
-  <!--ここにデザインの中見を書く-->
+      // Firebaseへのアクセス設定．アクセス先など．
+      const firebaseConfig = {
+        apiKey: "AIzaSyCHPeT9O1zXx0C1FSTZ0J-fUUA7BnX1Hxg",
+        authDomain: "miyako-clean-app.firebaseapp.com",
+        projectId: "miyako-clean-app",
+        storageBucket: "miyako-clean-app.appspot.com",
+        messagingSenderId: "550216961810",
+        appId: "1:550216961810:web:04f15f578ed1f818932dcb",
+        measurementId: "G-YNL0P4RKFW"
+      };
 
-  <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
-  <script type="module">
-    // 必要なライブラリを読み込む
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      getDoc,
-      doc
-    } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
-    import {
-      getAuth,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
+      // Firebaseの初期化
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore();
+      let userId
+      let auth = getAuth()
+      onAuthStateChanged(auth,async function(user) {
+        if (user) {
+          //ログイン済みの時
+          userId =  user.uid;
 
-    // Firebaseへのアクセス設定．アクセス先など．
-    const firebaseConfig = {
-      apiKey: "AIzaSyCHPeT9O1zXx0C1FSTZ0J-fUUA7BnX1Hxg",
-      authDomain: "miyako-clean-app.firebaseapp.com",
-      projectId: "miyako-clean-app",
-      storageBucket: "miyako-clean-app.appspot.com",
-      messagingSenderId: "550216961810",
-      appId: "1:550216961810:web:04f15f578ed1f818932dcb",
-      measurementId: "G-YNL0P4RKFW"
-    };
-
-    // Firebaseの初期化
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore();
-    let userId
-    let auth = getAuth()
-    onAuthStateChanged(auth, async function(user) {
-      if (user) {
-        //ログイン済みの時
-        userId = user.uid;
-
-        let doca = await getDoc(doc(db, "user", userId))
-        let trashdocs = await getDocs(collection(db, "trash")) //for文を使って作業を繰り返させる。
-        document.getElementById("posthistory").innerHTML = doca.data()["posthistory"]
-        //alert(doca.data()["mail"])
-        //const docs = await getDocs(collection(db, 'reports'))
-        document.getElementById("name").innerHTML = doca.data()["name"]
-        document.getElementById("point").innerHTML = doca.data()["point"]
-        document.getElementById("post").innerHTML = doca.data()["postCount"]
+          let doca =await getDoc(doc(db,"user",userId))
+          let trashdocs = await getDocs(collection(db,"trash"))//for文を使って作業を繰り返させる。
+          document.getElementById("posthistoryS"). innerHTML =  doca.data()["posthistory"]
+          //alert(doca.data()["mail"])
+          //const docs = await getDocs(collection(db, 'reports'))
+          document.getElementById("name").innerHTML=doca.data()["name"]
+          document.getElementById("point").innerHTML=doca.data()["point"]
+          document.getElementById("post").innerHTML=doca.data()["postCount"]
 
         //  docs.forEach(function(doc) {
         //    console.log(doc.data())
-        //    })
-      } else {
+      //    })
+　　　　　} else {
 
-        //ログインできていない時
-        window.location.href = '/login.html'
-      }
-    });
-  </script>
-  <!-- Code injected by live-server -->
-  <script type="text/javascript">
-    // <![CDATA[  <-- For SVG support
-    if ('WebSocket' in window) {
-      (function() {
-        function refreshCSS() {
-          var sheets = [].slice.call(document.getElementsByTagName("link"));
-          var head = document.getElementsByTagName("head")[0];
-          for (var i = 0; i < sheets.length; ++i) {
-            var elem = sheets[i];
-            head.removeChild(elem);
-            var rel = elem.rel;
-            if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-              var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-              elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-            }
-            head.appendChild(elem);
-          }
+       //ログインできていない時
+
+　　　　　window.location.href = '/login.html'
+　　　　　
+
         }
-        var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-        var address = protocol + window.location.host + window.location.pathname + '/ws';
-        var socket = new WebSocket(address);
-        socket.onmessage = function(msg) {
-          if (msg.data == 'reload') window.location.reload();
-          else if (msg.data == 'refreshcss') refreshCSS();
-        };
-        console.log('Live reload enabled.');
-      })();
-    }
-    // ]]>
-  </script>
-</body>
+      });
 
+      window.onload = async function() {
+        let docs = await getDocs(collection(db, 'trash'))
+        docs.forEach(function(doc) {
+          let litag = document.createElement("li")
+          document.getElementById("posth").appendChild(litag);
+          document.getElementById("posth").append(doc.data())
+        })
+      }
+
+
+    </script>
+  <!-- Code injected by live-server -->
+<script type="text/javascript">
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function() {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					head.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					head.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function(msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			console.log('Live reload enabled.');
+		})();
+	}
+	// ]]>
+</script>
+</body>
 </html>
