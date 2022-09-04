@@ -13,26 +13,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- スマートフォンで正しいサイズで表示されるように設定しています -->
   <link rel="stylesheet" type="text/css" href="main.css">
   <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
-  <link rel="stylesheet" href="top.css">
+  <link rel="stylesheet" href="top.css"><!-- cssと紐付けする -->
 
 </head>
-<!--bodyの中身が表示される内容です-->
+<!--課題:ゴミの種類を表示するのを英語->日本語に変える-->
 
 <body>
-
+<!--bodyの中身が表示される内容です-->
   <table>
     <tr>
-      <th class="fixed01"><a href="user.html">Myアカウントへ</a></th>
+      <th class="fixed01" +"z-index2">
+        <h1>ゴミ拾いアプリ（仮）</h1><a href="user.html">Myアカウントへ</a>
+      </th>
     </tr>
     <tr>
       <td>
         <div class="box27">
           <span class="box-title">最近の報告一覧</span>
           <p>
-          <div class="scroll">
+          <div class="scroll" +"z-index-1">
             <span>
               <ul>
                 <li id="news1">
+                  <!-- ここに情報をいれる -->
 
 
                 </li>
@@ -48,11 +51,51 @@
 
           <a href='upload.html'>投稿</a>
 
+
+
         </div>
         <h3>マップ</h3>
         <div id="map" style="width:512px; height:300px;"></div>
+        <style>
+        .flex {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .flex>p {
+          width: 49%;
+        }
+        <style>
+  .ichigyou img{
+      vertical-align: middle;
+      display: inline-block;
+  }
+  .ichigyou span{
+      display: inline-block;
+  }
+  </style>
+  <p class="ichigyou">
+      <img src="http://127.0.0.1:3000/public/pinIncomplete.png" width="50">
+      <span>このピンは現在の位置を示しています。</span>
+
+  </p>
+  <style>
+.ichigyou img{
+    vertical-align: middle;
+    display: inline-block;
+}
+.ichigyou span{
+    display: inline-block;
+}
+</style>
+<p class="ichigyou">
+    <img src="http://127.0.0.1:3000/public/pinNormal.png" width="50">
+    <span>このピンはみんなの見つけたゴミの場所を示しています。このピンをクリックすることでそのゴミの詳細を見ることができます</span>
+</p>
+
     </tr>
     </td>
+
 
   </table>
   <!--ここにデザインの中見を書く-->
@@ -60,11 +103,9 @@
   <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
 
   <script type="module">
-  /*まず、マップ上のピンの種類分けをする際にamountを使おうと思ったが、どのくらいを境に多い・少ない
+    /*まず、マップ上のピンの種類分けをする際にamountを使おうと思ったが、どのくらいを境に多い・少ない
     を分けるのかわからなかったため、一応現在地とゴミの位置で種類を分けた。
-    また、Myアカウントへ戻るのをヘッダー的な物の一部に追加したら使いやすそうだったので追加してみると、
-    色味が変（これはすぐに直せる）・別のCSSと重なるとレイヤー？が下になってみづらい
-    というのが課題
+
   */
     // 必要なライブラリを読み込む
     import {
@@ -94,8 +135,8 @@
       measurementId: "G-YNL0P4RKFW"
     };
 
+    //変数の定義
     let Volume
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore();
     let map
@@ -111,11 +152,11 @@
         userId = user.uid;
       } else {
         //ログインできていない時
-        window.location.href = '/login.html'
+        window.location.href = './login.html'
       }
     });
 
-    window.initMap = initMap
+    window.initMap = initMap //initmapの情報を持ってくる
 
     function initMap() {
 
@@ -126,34 +167,36 @@
       }
 
     }
-
+    //マップを表示させる関数
     function showMap(lat, lng) {
       map = new google.maps.Map(document.getElementById("map"), {
         center: {
-          lat: lat,
-          lng: lng
+          lat: lat, //緯度
+          lng: lng //経度
         },
-        zoom: 14,
+        zoom: 14, //表示する際にどのくらい拡大するか
       })
+      //マップ内に現在位置のマーカーを作成する
       new google.maps.Marker({
         position: {
-          lat: lat,
-          lng: lng
+          lat: lat, //緯度
+          lng: lng //経度
         },
-        map: map,
-        icon: 'http://127.0.0.1:3000/pinIncomplete.png'
+        map: map, //マップの指定
+        icon: 'http://127.0.0.1:3000/public/pinIncomplete.png' //マーカー のアイコンの指定
       })
       markers = []
       updateMakers()
     }
-
+    //位置を変数に代入
     function positionUpdated(pos) {
       console.log(pos)
       showMap(pos.coords.latitude, pos.coords.longitude)
 
     }
-
+    //登録されたゴミの位置情報を取得して代入する
     function updateMakers() {
+      //例2つ
       const pos = [{
           lat: 24.8154,
           lng: 125.2711,
@@ -165,6 +208,7 @@
           id: "dhhuefhwkf"
         }
       ]
+
       if (markers.length === 0 && map) {
         console.log(pos)
         for (const p of pos) {
@@ -172,7 +216,7 @@
             position: p,
             map: map,
 
-            icon: 'http://127.0.0.1:3000/%20pinNormal.png'
+            icon: 'http://127.0.0.1:3000/public/pinNormal.png'
 
 
 
@@ -189,21 +233,57 @@
         }
       }
     }
-
+    //マーカーがクリックされた時にそのゴミの詳細情報ページに飛ばす
     function clickEventFunc(event) {
       alert(event.position)
-      window.location.href = 'detail.html'
+      window.location.href = 'detail.html' //そのゴミのidごとdeta.htmlに飛ばす
     }
-
+    //firebaseから情報を取得して、その情報を表示させる
     window.onload = async function() {
-      let docs = await getDocs(collection(db, 'trash'))
+      let docs = await getDocs(collection(db, 'trash')) //ゴミの情報を取得する
       docs.forEach(function(doc) {
+        let gomiJunl =doc.data()["kind"]
+        let gomiHyoji=["種類:"];
+
+        if(gomiJunl=="moeru"){
+          gomiHyoji.push("燃えるゴミ")
+        }
+         if(gomiJunl=="kan"){
+          gomiHyoji.push("缶")
+        }
+         if(gomiJunl=="pettobotolu"){
+          gomiHyoji.push("ペットボトル")
+        }
+         if(gomiJunl=="kaden"){
+          gomiHyoji.push("家電")
+        }
+         if(gomiJunl=="nougyou"){
+          gomiHyoji.push("農業廃棄物")
+        }
+         if(gomiJunl=="bin"){
+          gomiHyoji.push("ビン")
+        }
+         if(gomiJunl=="happou"){
+        gomiHyoji.push("発泡スチロール")
+        }
+        if(gomiJunl=="wakaranai") {
+          gomiHyoji.push("わからない")
+        }
+        for(let i =0;i<gomiHyoji.length;i++){
+          console.log(gomiHyoji[i]);
+        }
+
         let litag = document.createElement("li")
         document.getElementById("news1").appendChild(litag);
-        document.getElementById("news1").append("種類:" + doc.data()["kind"])
-        document.getElementById("news1").append("量:" + doc.data()["amount"])
-        document.getElementById("news1").append("コメント:" + doc.data()["comment"])
+        for(let i=0;i<gomiHyoji.length;i++){
+            document.getElementById("news1").append(gomiHyoji[i]) //種類の情報を取得してnews1に突っ込む
+        }
 
+        document.getElementById("news1").append("量:" + doc.data()["amount"]) //量の情報を取得してnews1に突っ込む
+        document.getElementById("news1").append("コメント:" + doc.data()["comment"]) //コメントの情報を取得してnews1に突っ込む
+
+
+        //ここは量によってマップの色を変えるプログラムの予定
         if (doc.data()["amount"] < 1) {
 
           Volume = 1

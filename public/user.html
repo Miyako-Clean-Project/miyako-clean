@@ -20,17 +20,19 @@
 名前(<span id="name"></span>) <br/>
 
 <ul>
-<li>所持ポイント数(<span id="point"></span>)</li>
-<li>投稿数(<span id="post"></span>)</li>
-<li>ランキング(<span id="ranking"></span>)</li>
-<li>投稿履歴(<span id="posthistoryS"></span>)<ul id = "posth"></ul></li>
+  <li>所持ポイント数(<span id="point"></span>)</li>
+  <li>投稿数(<span id="post"></span>)</li>
+
+  <!--<li>ランキング(<span id="ranking"></span>)</li>
+  <li>投稿履歴(<span id="posthistoryS"></span>)</li> -->
+</ul>
 
 </ul>
 <div class = 'btn'>
-<a href="upload.html" class="btn">投稿ページへ</a>
+<p><a href="upload.html" class="btn">投稿ページへ</a></p>
 <div/>
 <div class = 'btn'>
-<a href="top.html" class="btn">トップページ戻る</a>
+<p><a href="top.html" class="btn">トップページ戻る</a></p>
 <div/>
     <!--ここにデザインの中見を書く-->
 
@@ -64,7 +66,7 @@
 
           let doca =await getDoc(doc(db,"user",userId))
           let trashdocs = await getDocs(collection(db,"trash"))//for文を使って作業を繰り返させる。
-          document.getElementById("posthistoryS"). innerHTML =  doca.data()["posthistory"]
+          //document.getElementById("posthistoryS"). innerHTML =  doca.data()["posthistory"]
           //alert(doca.data()["mail"])
           //const docs = await getDocs(collection(db, 'reports'))
           document.getElementById("name").innerHTML=doca.data()["name"]
@@ -78,7 +80,7 @@
 
        //ログインできていない時
 
-　　　　　window.location.href = '/login.html'
+　　　　　window.location.href = './login.html'
 　　　　　
 
         }

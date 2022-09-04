@@ -17,11 +17,14 @@
 <!--bodyの中身が表示される内容です-->
 
 <body>
-  <div>
-    <h2>メールアドレス<input type="text" id="mailAddress"></h2>
+
+    <h2>パスワードリセット画面</h2>
+    <input type="text" id="mailAddress">
+    <h4>パスワードを入力するメールアドレスを入力してください。</h4>
     <!-- 新規パスワード<input type="text" id="pas1"> -->
     <!-- 再度パスワードを入力してください（確認用）<input type="text" id="pas２"> -->
     <input type="button" value="送信" id="send">
+    <br><a href="./login.html">ログイン画面に戻る</a>
   </div>
   <!--ここにデザインの中見を書く-->
 
@@ -75,6 +78,9 @@
       sendPasswordResetEmail(auth, document.getElementById("mailAddress").value)
         .then(() => {
           alert("Password reset email sent!")
+
+
+    }
           // signInWithEmailAndPassword(auth, document.getElementById("name1").value,
           // document.getElementById("pas1").value).
           // then((userCredential) => {

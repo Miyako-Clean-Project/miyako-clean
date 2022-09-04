@@ -13,7 +13,7 @@
   <!-- <link rel="stylesheet" type="text/css" href="main.css"> -->
   <title>離島deプログラミング</title> <!-- ブラウザの上部などに表示されるタイトル -->
 
-  <style />
+  <style>
   body {
   background-image: url(photo1.jpg);
   background-size: cover;
@@ -47,8 +47,8 @@
 <!--bodyの中身が表示される内容です-->
 
 
-<body>
-  <form id="login_form">
+<body><!---->
+  <form id="login_form"><!--id="login_form"でデータを送信-->
     <div id="login_form_top">
       <h1>ログイン画面</h1>
       <p>ユーザーID、パスワードをご入力のうえ、ログインボタンをクリックしてください。</p>
@@ -62,8 +62,9 @@
       </div>
 
     </div>
-    <button type="button" id="register">ログイン</button>
-
+    <button type="button" id="register">ログイン</button><br><br>
+    新規ユーザー登録される方は<a href="./new.html">こちら</a><br><br>
+    パスワードをリセットされる方は<a href="./reset.html">こちら</a>
   </form>
 
   <!--全ての表示する情報を読み込んだ後，JavaScriptを読み込みます-->
@@ -122,7 +123,7 @@
           // Signed in
           const user = userCredential.user;
           console.log("signedin")
-          window.location.href = '/top.html'
+          window.location.href = './top.html'
 
         })
         .catch((error) => {
@@ -131,7 +132,7 @@
           document.getElementById("error").innerHTML = "エラーです"
         });
     }
-  </script> //ログインができない
+  </script>
 
 </body>
 

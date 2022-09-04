@@ -21,16 +21,16 @@
 <!--bodyの中身が表示される内容です-->
 
 <body>
-<div class="example">
+<div class="example"> <!-- 中央揃えするためにブロック化-->
 
-  <img src="IMG_2332.jpg" width="50%">
+  <img src="sea.jpg" width="1300" height="350">
 
-  <p>ゴミSNSへようこそ</p>
+  <p id="title" style="font-size:30pt;">ゴミSNSへようこそ</p>
 
 </div>
 
 
-  <a id="login" href="login.html">ログインへ</a>
+<div class=log> <a id="login" href="login.html"  style="font-size:30pt;font-weight:bold;" >ログインへ</a></div>
 
 <h1>ミヤコRe島エディターズ</h1>
 <h4>宮古島に住む中高生が集まって、島のポイ捨て・不法投棄の問題を解決するためのアプリ開発に取り組みました。
@@ -51,23 +51,60 @@
 
   <h2>ゴミSNSの使い方</h2>
   <h3>1. ゴミを見つけたら写真を撮って投稿しよう</h3>
-  見つけた場所と量を入力する<br />
-  投稿数によってポイントがもらえる<br />
-  <img src="gomizibun.jpeg" alt="投稿画面" width="15%" height="15%">
-
-  <h3>2. みんなの投稿を見よう</h3>
-  ゴミの量や種類、見つけた時間が分かる<br />
-  <img src="gomitoukou.png" alt="みんなの投稿" width="20%" height="16%">
-
+  見つけた量と場所入力する</br>
+  投稿数によってポイントがもらえる</br>
+  <img src="gomizibun.jpeg" alt="ゴミの写真" width=20% height=20%>
+  <h3>2. 皆の投稿を見てみよう</h3>
+  ごみの量や種類、見つけた時間が分かる</br>
+  <img src="gomitoukou.png" alt="ゴミの写真" width=30% height=30%>
   <h3>3. ゴミを拾おう</h3>
-  ゴミのある場所に行ってゴミ拾いをしよう<br />
-  マップを見ると一目でゴミの多い場所が分かる<br />
+  ごみのある場所に言ってごみ拾いをしましょう<br>
+  マップを見ると一目でごみの多い場所が分かる<br>
   <img src="gomi.jpeg" alt="ゴミの写真" width=30% height=30%>
   <br />
   <br />
 
   <!--ここにデザインの中見を書く-->
   <style>
+  #login {
+    position: fixed; /* 要素の位置を固定する */
+    bottom: 90; /* 基準の位置を画面の一番下に指定する */
+    right: 0; /* 基準の位置を画面の一番右に指定する */
+    width: 300px; /* 幅を指定する */
+    height: 40px;
+    }
+  #title {
+    position: fixed; /* 要素の位置を固定する */
+    bottom:0; /* 基準の位置を画面の一番下に指定する */
+    right:0; /* 基準の位置を画面の一番右に指定する */
+    width: 400px; /* 幅を指定する */
+    height:350px;
+    }
+
+  #title{
+ color:	RGB(27 , 24 , 17)
+  }
+
+  #login{
+
+      padding: 0 10px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 50%, rgb(80 , 200 , 120) 50%);
+        background-position: 0 0;
+        background-size: 200% auto;
+        transition: .3s;
+      }
+
+  #login:hover{
+        background-position: -100% 0;
+        color: #fff
+      }
+   #login{
+  font-family: sans-serif;
+}
+div.log {
+	text-align: center;
+}
+
     h3 {
       color: red;
     }
