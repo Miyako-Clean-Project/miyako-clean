@@ -19,7 +19,7 @@
 <!--課題:ゴミの種類を表示するのを英語->日本語に変える-->
 
 <body>
-<!--bodyの中身が表示される内容です-->
+  <!--bodyの中身が表示される内容です-->
   <table>
     <tr>
       <th class="fixed01" +"z-index2">
@@ -57,41 +57,43 @@
         <h3>マップ</h3>
         <div id="map" style="width:512px; height:300px;"></div>
         <style>
-        .flex {
-          display: flex;
-          justify-content: space-between;
-        }
+          .flex {
+            display: flex;
+            justify-content: space-between;
+          }
 
-        .flex>p {
-          width: 49%;
-        }
+          .flex>p {
+            width: 49%;
+          }
+
+          <style>.ichigyou img {
+            vertical-align: middle;
+            display: inline-block;
+          }
+
+          .ichigyou span {
+            display: inline-block;
+          }
+        </style>
+        <p class="ichigyou">
+          <img src="http://127.0.0.1:3000/public/pinIncomplete.png" width="50">
+          <span>このピンは現在の位置を示しています。</span>
+
+        </p>
         <style>
-  .ichigyou img{
-      vertical-align: middle;
-      display: inline-block;
-  }
-  .ichigyou span{
-      display: inline-block;
-  }
-  </style>
-  <p class="ichigyou">
-      <img src="http://127.0.0.1:3000/public/pinIncomplete.png" width="50">
-      <span>このピンは現在の位置を示しています。</span>
+          .ichigyou img {
+            vertical-align: middle;
+            display: inline-block;
+          }
 
-  </p>
-  <style>
-.ichigyou img{
-    vertical-align: middle;
-    display: inline-block;
-}
-.ichigyou span{
-    display: inline-block;
-}
-</style>
-<p class="ichigyou">
-    <img src="http://127.0.0.1:3000/public/pinNormal.png" width="50">
-    <span>このピンはみんなの見つけたゴミの場所を示しています。このピンをクリックすることでそのゴミの詳細を見ることができます</span>
-</p>
+          .ichigyou span {
+            display: inline-block;
+          }
+        </style>
+        <p class="ichigyou">
+          <img src="http://127.0.0.1:3000/public/pinNormal.png" width="50">
+          <span>このピンはみんなの見つけたゴミの場所を示しています。このピンをクリックすることでそのゴミの詳細を見ることができます</span>
+        </p>
 
     </tr>
     </td>
@@ -242,45 +244,137 @@
     window.onload = async function() {
       let docs = await getDocs(collection(db, 'trash')) //ゴミの情報を取得する
       docs.forEach(function(doc) {
-        let gomiJunl =doc.data()["kind"]
-        let gomiHyoji=["種類:"];
+        let gomiJunl = [];
+        let gomiHyoji = [];
 
-        if(gomiJunl=="moeru"){
-          gomiHyoji.push("燃えるゴミ")
-        }
-         if(gomiJunl=="kan"){
-          gomiHyoji.push("缶")
-        }
-         if(gomiJunl=="pettobotolu"){
-          gomiHyoji.push("ペットボトル")
-        }
-         if(gomiJunl=="kaden"){
-          gomiHyoji.push("家電")
-        }
-         if(gomiJunl=="nougyou"){
-          gomiHyoji.push("農業廃棄物")
-        }
-         if(gomiJunl=="bin"){
-          gomiHyoji.push("ビン")
-        }
-         if(gomiJunl=="happou"){
-        gomiHyoji.push("発泡スチロール")
-        }
-        if(gomiJunl=="wakaranai") {
-          gomiHyoji.push("わからない")
-        }
-        for(let i =0;i<gomiHyoji.length;i++){
-          console.log(gomiHyoji[i]);
+        let moeruHantei = true
+        let kanHantei = true
+        let pettobotoluHantei = true
+        let kadenHantei = true
+        let nougyouHantei = true
+        let binHantei = true
+        let happouHantei = true
+        let wakaranaiHantei = true
+
+        gomiJunl.push(doc.data()["kind"]);
+
+
+
+        for (let i = 0; i < 8; i++) {
+
+          if (moeruHantei == true) {
+
+            for (let a = 0; a < gomiJunl.length; a++) {
+
+              if (gomiJunl[a] == "moeru") {
+
+                gomiHyoji.push("燃えるゴミ");
+                moeruHantei = false
+                continue;
+
+              }
+
+            }
+
+            moeruHantei = false
+              continue;
+          } else if (kanHantei == true) {
+            for (let b = 0; b <  gomiJunl.length; b++) {
+              if (gomiJunl[b] == "kan") {
+                gomiHyoji.push("缶");
+                kanHantei = false
+                continue;
+
+              }
+            }
+
+            kanHantei = false
+              continue;
+          } else if (pettobotoluHantei == true) {
+            for (let c = 0; c <  gomiJunl.length; c++) {
+              if (gomiJunl[c] == "pettobotolu") {
+                gomiHyoji.push("ペットボトル");
+                pettobotoluHantei = false
+                continue;
+
+              }
+            }
+
+            pettobotoluHantei = false
+              continue;
+          } else if (kadenHantei == true) {
+            for (let d = 0; d <  gomiJunl.length; d++) {
+              if (gomiJunl[d] == "kaden") {
+                gomiHyoji.push("家電");
+                kadenHantei = false
+                continue;
+
+              }
+            }
+
+            kadenHantei = false
+              continue;
+          } else if (nougyouHantei == true) {
+            for (let e = 0; e <  gomiJunl.length; e++) {
+              if (gomiJunl[e] == "nougyou") {
+                gomiHyoji.push("農業廃棄物");
+                nougyouHantei = false
+                continue;
+
+              }
+            }
+
+            nougyouHantei = false
+            continue;
+          } else if (binHantei == true) {
+            for (let f = 0; f < gomiJunl.length; f++) {
+              if (gomiJunl[f] == "bin") {
+                gomiHyoji.push("ビン");
+                binHantei = false
+                continue;
+
+              }
+            }
+
+            binHantei = false
+            continue;
+          } else if (happouHantei = true) {
+            for (let g = 0; g < gomiJunl.length; g++) {
+              if (gomiJunl[g] == "happou") {
+                gomiHyoji.push("発泡スチロール");
+                happouHantei = false
+                continue;
+
+              }
+            }
+
+            happouHantei = false
+                continue;
+          } else if (wakaranaiHantei == true) {
+            for (let h = 0; h < gomiJunl.length; h++) {
+              if (gomiJunl[h] == "wakaranai") {
+                gomiHyoji.push("わからない");
+                wakaranaiHantei = false
+                continue;
+
+              }
+            }
+
+            wakaranaiHantei = false
+              continue;
+          }
+
         }
 
         let litag = document.createElement("li")
         document.getElementById("news1").appendChild(litag);
-        for(let i=0;i<gomiHyoji.length;i++){
-            document.getElementById("news1").append(gomiHyoji[i]) //種類の情報を取得してnews1に突っ込む
-        }
+
+        document.getElementById("news1").append("種類:" + gomiHyoji) //種類の情報を取得してnews1に突っ込む
+
 
         document.getElementById("news1").append("量:" + doc.data()["amount"]) //量の情報を取得してnews1に突っ込む
         document.getElementById("news1").append("コメント:" + doc.data()["comment"]) //コメントの情報を取得してnews1に突っ込む
+
 
 
         //ここは量によってマップの色を変えるプログラムの予定
