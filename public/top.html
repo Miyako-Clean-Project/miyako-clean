@@ -244,190 +244,27 @@
     window.onload = async function() {
       let docs = await getDocs(collection(db, 'trash')) //ゴミの情報を取得する
       docs.forEach(function(doc) {
-        let gomiJunl = [];
-        let gomiHyoji = [];
-
-        let moeruHantei = true
-        let kanHantei = true
-        let pettobotoluHantei = true
-        let kadenHantei = true
-        let nougyouHantei = true
-        let binHantei = true
-        let happouHantei = true
-        let wakaranaiHantei = true
-
-        gomiJunl.push(doc.data()["kind"]);
-
-
-        MOTO: for (let i = 0; i < 8; i++) {
-          console.log("MOTOのループを始めます" + i + "回目");
-          if (moeruHantei == true) {
-            console.log("moeruHanteiがtrueでした");
-            MOERU: for (let a = 0; a < gomiJunl.length; a++) {
-              console.log("MOERUのループを始めます"+a+"回目");
-              if (gomiJunl[a] == "moeru") {
-                console.log("gomijunlにmoeruの要素がありましたgimiHyojiに燃えるゴミを突っ込みます");
-                gomiHyoji.push("燃えるゴミ");
-                console.log("moeruhanteiをfalseにします(ループ内)");
-                moeruHantei = false
-                console.log("MOTOのループをcontinueします(ループ内)");
-                continue MOTO;
-
-              }
-
-            }
-            console.log("moeruHanteiをfalseにします(ループ外)");
-            moeruHantei = false
-            console.log("MOTOのループをcontinueします (ループ外)");
-            continue MOTO;
-          } else if (kanHantei == true) {
-            console.log("kanHanteiがtrueでした");
-            KAN: for (let b = 0; b < gomiJunl.length; b++) {
-              console.log("KANのループを始めます"+b+"回目");
-              if (gomiJunl[b] == "kan") {
-                console.log("gomijunlにkanの要素がありましたgomihyojiに缶を突っ込みます");
-
-                gomiHyoji.push("缶");
-                console.log("kanHanteiをfalseにしますループ内");
-                kanHantei = false
-                console.log("MOTOのループをcontinueします(ループ内)");
-                continue MOTO;
-
-              }
-            }
-            console.log("kanHanteiをfalseにします(ループ外)");
-            kanHantei = false
-            console.log("MOTOのループをcontineuします(ループ外)");
-            continue MOTO;
-          }
-          else if (pettobotoluHantei == true) {
-            console.log("pettobotoluHanteiがtrueでした");
-            PET: for (let c = 0; c < gomiJunl.length; c++) {
-              console.log("PETのループを始めます" +c+"回目");
-              if (gomiJunl[c] == "pettobotolu") {
-                console.log("gomiJunlにoettobotoluの要素がありましたgomihyojiにペットボトルを突っ込みます");
-                gomiHyoji.push("ペットボトル");
-                console.log("pettobotoluHanteiをfalseにします(ループ内)");
-                pettobotoluHantei = false
-                console.log("MOTOのループをcontinueします(ループ内)");
-                continue MOTO;
-
-              }
-            }
-
-            console.log("pettobotoluHanteiをfalseにします(ループ外)");
-            pettobotoluHantei = false
-            console.log("MOTOのループをcontinueします(ループ外)");
-            continue MOTO;
-          }
-          else if (kadenHantei == true) {
-            console.log("kadenHanteiがtrueでした");
-            KADEN: for (let d = 0; d < gomiJunl.length; d++) {
-              console.log("KADENのループを始めます"+d+"回目");
-              if (gomiJunl[d] == "kaden") {
-                console.log("gomijunlにkadenの要素がありましたgomiHyojiに突っ込みます");
-                gomiHyoji.push("家電");
-                console.log("kadenHanteiをfaleseにします(ループ内)");
-                kadenHantei = false
-                console.log("MOTOのループをcontinueします(ループ内)");
-                continue MOTO;
-
-              }
-            }
-            console.log("kadenHanteiをfalseにします(ループ外)");
-            kadenHantei = false
-            console.log("MOTOのループをcontinueします(ループ外)");
-            continue MOTO;
-          }
-          else if (nougyouHantei == true) {
-            console.log("nougyouHanteiがtureでした");
-            NOGYOU: for (let e = 0; e < gomiJunl.length; e++) {
-              console.log("NOGYOUのループを開始します"+e+"回目");
-              if (gomiJunl[e] == "nougyou") {
-                console.log("gomijunlにnougoyouの要素がありましたgomiHyoujiに農業廃棄物を突っ込みます");
-
-                gomiHyoji.push("農業廃棄物");
-                console.log("nougyouHanteiをfalseにします(ループ内)");
-                nougyouHantei = false
-                console.log("MOTOのループをcontinueします(ループ内)");
-                continue MOTO;
-
-
-              }
-            }
-            console.log("nougyouHanteiをfalseにします(ループ外)");
-            nougyouHantei = false
-            console.log("MOTOのループをcontinueします(ループ外)");
-            continue MOTO;
-
-          }
-          else if (binHantei == true) {
-            console.log("binHanteiがtureでした");
-            BIN: for (let f = 0; f < gomiJunl.length; f++) {
-              console.log("BINのループを開始します"+f+"回目");
-              if (gomiJunl[f] == "bin") {
-                console.log("gomiJunlにbinの要素がありましたgomiHyojiに突っ込みます");
-
-                gomiHyoji.push("ビン");
-                console.log("binHanteiをfalseにします(ループ内)");
-                binHantei = false
-                console.log("MOTOのループを開始します(ループ内)");
-                continue MOTO;
-
-
-              }
-            }
-            console.log("binHanteiをfalseにします（ループ外)");
-            binHantei = false
-            console.log("MOTOのループをcontinueします(ループ外)");
-            continue MOTO;
-
-          }
-          else if (happouHantei = true) {
-            console.log("happouHanteiがtureでした");
-            HAPPOU: for (let g = 0; g < gomiJunl.length; g++) {
-              console.log("HAPPOUのループを開始します"+g+"回目");
-              if (gomiJunl[g] == "happou") {
-                console.log("gomiJunlにhappuoの要素がありましたgomiHyojiに発泡スチロールを突っ込みます");
-
-                gomiHyoji.push("発泡スチロール");
-                console.log("happouHanteiをfalseにします(ループ内)");
-                happouHantei = false
-                console.log(" MOTOのループをcontinueします(ループ内)");
-                continue MOTO;
-
-
-              }
-            }
-            console.log("happouHanteiをfalseにします（ループ外）");
-            happouHantei = false
-            console.log("MOTOのループをcontinueします（ループ外）");
-            continue MOTO;
-
-          }
-          else if (wakaranaiHantei == true) {
-            console.log("wakaranaiHanteiがtureでした");
-            WAKARANAI: for (let h = 0; h < gomiJunl.length; h++) {
-              console.log("WAKARANAIのループを開始します"+h+"回目");
-              if (gomiJunl[h] == "wakaranai") {
-                console.log("gomiJunlの中にwakaranaiの要素がありましたgomiHyojiに突っ込みます");
-                gomiHyoji.push("わからない");
-                console.log("wakaranaiHanteiをfalseにします(ループ内)");
-                wakaranaiHantei = false
-                console.log("MOTOのループをcontinueします(ループ内)");
-                continue MOTO;
-
-
-              }
-            }
-            console.log("wakaranaiHanteiをfalseにします(ループ外)");
-            wakaranaiHantei = false
-            console.log("MOTOのループをcontinueします(ループ外)");
-            continue MOTO;
-
-          }
-
+        let gomiJunl = doc.data()["kind"]
+        let gomiHyoji = []
+        let gomien2ja = {
+          moeru: "燃えるゴミ",
+          kan: "缶",
+          pettobotolu: "ペットボトル",
+          kaden: "家電",
+          nougyou: "農業",
+          bin: "ビン",
+          happou: "発泡スチロール",
+          wakaranai: "分からない"
         }
+
+        for (let i = 0; i < gomiJunl.length; i++) {
+          gomiHyoji.push(gomien2ja[gomiJunl[i]])
+        }
+
+
+
+
+
 
         let litag = document.createElement("li")
         document.getElementById("news1").appendChild(litag);
